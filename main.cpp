@@ -19,4 +19,6 @@ int main () {
   	z.Insert(4);
   	z.Insert(6);
   	z.Print();
+	
+	z.GenerateGraph ();
 }

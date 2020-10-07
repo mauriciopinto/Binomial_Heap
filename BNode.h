@@ -1,5 +1,6 @@
 #include <list>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 template<typename T>
@@ -23,6 +24,13 @@ public:
 		for (auto it : children) {
 			cout << endl;
 			it->Print ();
+		}
+	}
+
+	void GenerateGraph (ofstream *ofile) {
+		for (auto it = children.begin (); it != children.end (); it++) {
+			*ofile << key << " -> " << (*it)->key << ";" << endl;
+			(*it)->GenerateGraph (ofile);
 		}
 	}
 

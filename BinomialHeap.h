@@ -99,7 +99,24 @@ public:
 	}
 
 	void Delete (T key) {
+		//Delete
+	}
 
+	int GetSize () {
+		return size;
+	}
+
+	void GenerateGraph () {
+		ofstream ofile;
+		ofile.open ("graph.gv", ios::trunc);
+
+		ofile << "graph BinomialHeap {" << endl;
+		for (auto it = heap_list.begin (); it != heap_list.end (); it++) {
+			if (next (it, 1) != heap_list.end ())
+				ofile << (*it)->key << " -> " << (*(next (it, 1)))->key << ";" << endl;
+			(*it)->GenerateGraph (&ofile);
+		}
+		ofile << "}";
 	}
 };
 
