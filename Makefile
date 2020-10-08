@@ -14,3 +14,4 @@ clean:
 	rm -f BinomialHeap
 	rm -f $(ALLOBJ)
 	rm -f bhgraph.jpeg
+	rm -f graph.gv

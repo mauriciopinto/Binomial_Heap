@@ -46,7 +46,25 @@ public:
 		}
 	}
 
-	void DecreaseKey (BNode<T> *node, T value);
+	void DecreaseKey (BNode<T> *node, T value) {
+		BNode<T> *temp = node;
+		BNode<T> *tempParent = node->parent;
+		bool end = false;
+		while (tempParent != nullptr || end) {
+			end = true;
+			temp->key = value;
+			if (temp->key < tempParent->key) {
+				int tempKey = temp->key;
+				temp->key = tempParent->key;
+				tempParent->key = tempKey;
+				end = false;
+			}
+			temp = tempParent;
+			tempParent = temp->parent;
+		}
+		if (!tempParent && temp->key < min->key)
+			min = temp;
+	}
 private:
 	void Merge (BinomialHeap<T> H) {
 		for (auto it : H.heap_list) 
@@ -117,6 +135,11 @@ public:
 			(*it)->GenerateGraph (&ofile);
 		}
 		ofile << "}";
+	}
+
+	void InputData (string filename) {
+		ifstream ifile;
+		//Completar
 	}
 };
 
