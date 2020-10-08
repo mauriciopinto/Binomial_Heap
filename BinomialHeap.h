@@ -15,8 +15,7 @@ private:
 public:
 	BinomialHeap () {};
 
-	void Insert (T key) {
-		BNode<T> *temp = new BNode<T> (key);
+	void Insert (BNode<T> *temp) {
 		if (!min || min->key >= temp->key)
 			min = temp;
 
@@ -34,27 +33,54 @@ public:
 		heap_list.remove (min);
 		auto aux = min->children;
 		size--;
-		for (auto it : aux)
+		for (auto it : aux) {
+			it->parent = nullptr;
 			Insert (it);
+		}
 		min = nullptr;
 		T min_key = INT_MAX;
 		for (auto it : heap_list) {
-			if ((*it)->key < min_key) {
-				min_key = (*it)->key;
-				min = *it;
+			if (it->key < min_key) {
+				min_key = it->key;
+				min = it;
 			}
 		}
 	}
 
+	BNode<T> * Search(BNode<T> * node, T value){
+    		if(node->key == value)
+      			return node;
+		
+		BNode<T> *temp;
+		for(auto it:node->children) {
+      			temp = Search(it, value);
+			if (temp)
+				return temp;
+		}
+
+		return nullptr;
+	}
+
+
+	BNode<T> * Find(T value){
+		for(auto node : heap_list){
+			auto ret = Search(node, value);
+        		if (ret)
+         			return ret;
+		}
+		return nullptr;
+  	}
+	
 	void DecreaseKey (BNode<T> *node, T value) {
 		BNode<T> *temp = node;
 		BNode<T> *tempParent = node->parent;
 		bool end = false;
-		while (tempParent != nullptr || end) {
+		int tempKey;
+		temp->key = value;
+		while (tempParent != nullptr && end) {
 			end = true;
-			temp->key = value;
 			if (temp->key < tempParent->key) {
-				int tempKey = temp->key;
+				tempKey = temp->key;
 				temp->key = tempParent->key;
 				tempParent->key = tempKey;
 				end = false;
@@ -116,8 +142,9 @@ public:
 		}
 	}
 
-	void Delete (T key) {
-		//Delete
+	void Delete (BNode<T> *node) {
+		DecreaseKey (node, INT_MIN);
+		DeleteMin ();
 	}
 
 	int GetSize () {

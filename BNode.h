@@ -8,7 +8,7 @@ class BNode {
 protected:
 	int grado;
 	T key;
-	BNode<T> *parent;
+	BNode<T> *parent = nullptr;
 private:
 	list<BNode<T> *> children;
 public:
@@ -25,6 +25,7 @@ public:
 			cout << endl;
 			it->Print ();
 		}
+		cout << endl;
 	}
 
 	void GenerateGraph (ofstream *ofile) {
@@ -32,6 +33,10 @@ public:
 			*ofile << key << " -> " << (*it)->key << ";" << endl;
 			(*it)->GenerateGraph (ofile);
 		}
+	}
+	
+	int GetKey () {
+		return key;
 	}
 
 	template<typename U> friend class BinomialHeap;
