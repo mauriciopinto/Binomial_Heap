@@ -155,8 +155,10 @@ public:
 		ofstream ofile;
 		ofile.open ("graph.gv", ios::trunc);
 
-		ofile << "graph BinomialHeap {" << endl;
+		ofile << "digraph BinomialHeap {" << endl;
+		ofile << "node [shape=circle];" << endl << "rankdir=LR;" << endl;
 		for (auto it = heap_list.begin (); it != heap_list.end (); it++) {
+			ofile << (*it)->key << " [color=red];" << endl;
 			if (next (it, 1) != heap_list.end ())
 				ofile << (*it)->key << " -> " << (*(next (it, 1)))->key << ";" << endl;
 			(*it)->GenerateGraph (&ofile);
